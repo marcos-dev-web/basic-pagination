@@ -1,11 +1,14 @@
 import "./style.js";
 
-var actualValue = 1;
-const view = document.querySelector('.view');
-const whells = document.querySelector('.whells');
+const q = (element) => document.querySelector(element);
+const ce = (element_name) => document.createElement(element_name);
 
-const prev = document.querySelector('.prev');
-const next = document.querySelector('.next');
+var actualValue = 1;
+const view = q('.view');
+const whells = q('.whells');
+
+const prev = q('.prev');
+const next = q('.next');
 
 const data = {
   "pessoas": [
@@ -41,7 +44,7 @@ const addActive = (element) => {
 }
 
 const createWhell = (id, state) => {
-  let whell = document.createElement('span')
+  let whell = ce('span')
   whell.setAttribute('data-id', id);
 
   whell.classList.add('whell');
@@ -56,14 +59,14 @@ const createWhell = (id, state) => {
 
 const createDiv = (body) => {
   const elements = {
-    div_name: document.createElement('div'),
-    div_bottom: document.createElement('div'),
-    div_age: document.createElement('div'),
-    div_sex: document.createElement('div'),
+    div_name: ce('div'),
+    div_bottom: ce('div'),
+    div_age: ce('div'),
+    div_sex: ce('div'),
 
-    h1: document.createElement('h1'),
-    p: document.createElement('p'),
-    span: document.createElement('span')
+    h1: ce('h1'),
+    p: ce('p'),
+    span: ce('span')
   }
 
   elements.h1.innerText = body.nome;
@@ -84,21 +87,11 @@ const createDiv = (body) => {
   view.appendChild(elements.div_bottom);
 }
 
-const deletDiv = () => {
+const clearView = () => {
   view.innerHTML = ""
 }
 
 let slc_dt = data.pessoas;
-
-createDiv(slc_dt[0]);
-for (let id in slc_dt) {
-  if (id == 0) {
-    createWhell(id, "active")
-  }
-  else {
-    createWhell(id)
-  }
-}
 
 next.addEventListener('click', () => {
   let data_id_active = document.querySelector('.whell.active');
@@ -115,13 +108,13 @@ next.addEventListener('click', () => {
     actualValue++;
     addActive(document.querySelector(`.whell:nth-child(${actualValue})`))
     removeActive(data_id_active)
-    deletDiv()
+    clearView()
     createDiv(data.pessoas[actualValue-1]);
   } else {
     actualValue = 1;
     addActive(document.querySelector(`.whell:nth-child(${actualValue})`))
     removeActive(data_id_active)
-    deletDiv()
+    clearView()
     createDiv(data.pessoas[actualValue-1]);
   }
 })
@@ -140,13 +133,27 @@ prev.addEventListener('click', () => {
     actualValue--;
     addActive(document.querySelector(`.whell:nth-child(${actualValue})`))
     removeActive(data_id_active)
-    deletDiv()
+    clearView()
     createDiv(data.pessoas[actualValue-1]);
   } else {
     actualValue = list_id.length;
     addActive(document.querySelector(`.whell:nth-child(${actualValue})`))
     removeActive(data_id_active)
-    deletDiv()
+    clearView()
     createDiv(data.pessoas[actualValue-1]);
   }
 })
+
+const init = () => {
+  createDiv(slc_dt[0]);
+  for (let id in slc_dt) {
+    if (id == 0) {
+      createWhell(id, "active")
+    }
+    else {
+      createWhell(id)
+    }
+  }
+}
+
+init();
